@@ -2,6 +2,14 @@
 
 Voxli Book Reader is a lightweight browser extension for reading local **EPUB** and **FB2** files directly in Opera.
 
+## Promo & Screenshots
+
+![Opera promo](store-assets/opera-promo-300x188.png)
+
+![Reader screenshot 1](store-assets/1.png)
+
+![Reader screenshot 2](store-assets/2.png)
+
 ## Features
 
 - Open local `.epub` and `.fb2` books from the popup.
