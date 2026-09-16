@@ -3,7 +3,7 @@ export const SUPPORTED_LOCALES = ["en", "ru", "de", "fr", "zh_Hans", "zh_Hant"];
 export const RUNTIME_MESSAGES = {
   en: {
     extensionName: "Voxli Book Reader",
-    extensionDescription: "Book reader for EPUB/FB2 with local reading progress.",
+    extensionDescription: "Read local EPUB and FB2 books with themes, text settings, contents, and saved reading progress.",
     extensionActionTitle: "Open Voxli Book Reader",
     popupTitle: "Voxli Book Reader",
     openBook: "Open Book",
@@ -50,7 +50,7 @@ export const RUNTIME_MESSAGES = {
   },
   ru: {
     extensionName: "Voxli Book Reader",
-    extensionDescription: "Читалка EPUB/FB2 с локальным сохранением позиции чтения.",
+    extensionDescription: "Читайте локальные книги EPUB и FB2 с темами, настройками текста, оглавлением и сохранением прогресса.",
     extensionActionTitle: "Открыть Voxli Book Reader",
     popupTitle: "Voxli Book Reader",
     openBook: "Открыть книгу",
@@ -97,7 +97,7 @@ export const RUNTIME_MESSAGES = {
   },
   de: {
     extensionName: "Voxli Book Reader",
-    extensionDescription: "Öffnet EPUB/FB2 im Browser und speichert die Leseposition lokal.",
+    extensionDescription: "Lokale EPUB- und FB2-Bücher lesen – mit Themen, Texteinstellungen, Inhaltsverzeichnis und lokalem Lesefortschritt.",
     extensionActionTitle: "Voxli Book Reader öffnen",
     popupTitle: "Voxli Book Reader",
     openBook: "Buch öffnen",
@@ -144,7 +144,7 @@ export const RUNTIME_MESSAGES = {
   },
   fr: {
     extensionName: "Voxli Book Reader",
-    extensionDescription: "Ouvre EPUB/FB2 dans le navigateur et enregistre la position de lecture localement.",
+    extensionDescription: "Lisez des livres EPUB et FB2 locaux avec thèmes, réglages du texte, table des matières et progression locale.",
     extensionActionTitle: "Ouvrir Voxli Book Reader",
     popupTitle: "Voxli Book Reader",
     openBook: "Ouvrir un livre",
@@ -191,7 +191,7 @@ export const RUNTIME_MESSAGES = {
   },
   zh_Hans: {
     extensionName: "Voxli Book Reader",
-    extensionDescription: "在浏览器中打开 EPUB/FB2 并本地保存阅读位置。",
+    extensionDescription: "阅读本地 EPUB 和 FB2 书籍，支持主题、文字设置、目录和阅读进度保存。",
     extensionActionTitle: "打开 Voxli Book Reader",
     popupTitle: "Voxli Book Reader",
     openBook: "打开书籍",
@@ -238,7 +238,7 @@ export const RUNTIME_MESSAGES = {
   },
   zh_Hant: {
     extensionName: "Voxli Book Reader",
-    extensionDescription: "在瀏覽器中開啟 EPUB/FB2，並在本機儲存閱讀位置。",
+    extensionDescription: "閱讀本地 EPUB 和 FB2 書籍，支援主題、文字設定、目錄和閱讀進度儲存。",
     extensionActionTitle: "開啟 Voxli Book Reader",
     popupTitle: "Voxli Book Reader",
     openBook: "開啟書籍",

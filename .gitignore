@@ -1,1 +1,19 @@
 .tmp/
+
+# Local credentials and secret material
+.env
+.env.*
+!.env.example
+.npmrc
+.git-credentials
+*.pem
+*.key
+*.p12
+*.pfx
+credentials/
+secrets/
+auth/
+
+# Local browser automation state
+playwright/.auth/
+**/user-data-dir/

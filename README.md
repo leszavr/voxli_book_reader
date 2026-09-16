@@ -40,6 +40,10 @@ Voxli Book Reader works fully on-device:
 
 All reading data is stored locally in browser extension storage.
 
+The public privacy policy for store submissions is available at:
+
+- https://github.com/leszavr/voxli_book_reader/blob/main/PRIVACY.md
+
 ## Permissions
 
 The extension requests only:
@@ -76,12 +80,12 @@ This project is plain JavaScript (no build step required).
 3. Enable **Developer mode**.
 4. Click **Load unpacked** and select the project folder.
 
-## Packaging for Opera Add-ons
+## Packaging for Opera Add-ons and Chrome Web Store
 
-Create ZIP from the project root:
+Create a ZIP from the project root. The manifest must be at the archive root:
 
 ```bash
-zip -r extension-release/voxli-book-reader-opera-v1.0.0.zip \
+zip -r extension-release/voxli-book-reader-opera-v1.0.10.zip \
   manifest.json options.html filepicker.html reader.html styles.css _locales icons src
 ```
 
@@ -89,6 +93,11 @@ Upload the generated ZIP to Opera Add-ons and provide this public source reposit
 
 - https://github.com/leszavr/voxli_book_reader
 
+For Chrome Web Store listing assets, use the files in `store-assets/`. Opera screenshots
+are 612×408 pixels; Chrome requires screenshots at 1280×800 or 640×400 pixels and a
+440×280 small promotional tile. The Chrome dashboard also requires privacy disclosures,
+permission justifications, and the public privacy policy URL above.
+
 ## Version
 
-Current extension version: `1.0.9`
+Current extension version: `1.0.10`
