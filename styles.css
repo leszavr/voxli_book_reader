@@ -97,27 +97,23 @@ body {
   color: var(--muted);
 }
 
-.options-info,
-.options-links {
+.options-info {
   border-top: 1px solid var(--border);
   padding-top: 10px;
 }
 
-.options-info h2,
-.options-links h2 {
+.options-info h2 {
   margin: 0 0 6px;
   font-size: 14px;
 }
 
-.options-info p,
-.options-links p {
+.options-info p {
   margin: 4px 0;
   font-size: 12px;
   line-height: 1.45;
 }
 
-.options-info a,
-.options-links a {
+.options-info a {
   color: var(--accent);
 }
 
