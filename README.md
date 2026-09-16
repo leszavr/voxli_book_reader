@@ -85,7 +85,7 @@ This project is plain JavaScript (no build step required).
 Create a ZIP from the project root. The manifest must be at the archive root:
 
 ```bash
-zip -r extension-release/voxli-book-reader-opera-v1.0.10.zip \
+zip -r extension-release/voxli-book-reader-opera-v1.0.11.zip \
   manifest.json options.html filepicker.html reader.html styles.css _locales icons src
 ```
 
@@ -100,4 +100,4 @@ permission justifications, and the public privacy policy URL above.
 
 ## Version
 
-Current extension version: `1.0.10`
+Current extension version: `1.0.11`

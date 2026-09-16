@@ -48,6 +48,9 @@
   "linksTitle": { "message": "Links" },
   "developerSite": { "message": "Developer site" },
   "extensionSite": { "message": "Extension site" },
+  "supportedFormatsInfo": { "message": "Supports EPUB and FB2 books." },
+  "localProcessingInfo": { "message": "Books and reading progress are processed locally on your device." },
+  "privacyPolicy": { "message": "Privacy policy" },
   "selectBookFile": { "message": "Please select a book file (EPUB or FB2)" },
   "selectFile": { "message": "Select File" },
   "loadingBook": { "message": "Loading book, please wait..." }
