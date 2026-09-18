@@ -44,7 +44,7 @@
     <script type="module">
         // Test imports
         try {
-            const fb2Module = await import('./src/parsers/fb2.js');
+            const fb2Module = await import('../common/src/parsers/fb2.js');
             document.getElementById('fb2-import-result').innerHTML = 
                 '<span class="success">✓ FB2 parser imported successfully</span><br>Exports: ' + 
                 Object.keys(fb2Module).join(', ');
@@ -54,7 +54,7 @@
         }
 
         try {
-            const epubModule = await import('./src/parsers/epub.js');
+            const epubModule = await import('../common/src/parsers/epub.js');
             document.getElementById('epub-import-result').innerHTML = 
                 '<span class="success">✓ EPUB parser imported successfully</span><br>Exports: ' + 
                 Object.keys(epubModule).join(', ');
@@ -73,7 +73,7 @@
             }
 
             try {
-                const { parseFb2 } = await import('./src/parsers/fb2.js');
+                const { parseFb2 } = await import('../common/src/parsers/fb2.js');
                 const result = await parseFb2(fileInput.files[0]);
                 
                 const tags = [];
@@ -114,7 +114,7 @@
                 // Load JSZip
                 if (!window.JSZip) {
                     const script = document.createElement('script');
-                    script.src = './src/vendor/jszip.min.js';
+                    script.src = '../common/src/vendor/jszip.min.js';
                     await new Promise((resolve, reject) => {
                         script.onload = resolve;
                         script.onerror = reject;
@@ -122,7 +122,7 @@
                     });
                 }
 
-                const { parseEpub } = await import('./src/parsers/epub.js');
+                const { parseEpub } = await import('../common/src/parsers/epub.js');
                 const result = await parseEpub(fileInput.files[0]);
                 
                 const tags = [];

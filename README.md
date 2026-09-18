@@ -1,20 +1,11 @@
-# Voxli Book Reader (Opera Extension)
+# Voxli Book Reader
 
-Voxli Book Reader is a lightweight browser extension for reading local **EPUB** and **FB2** files directly in Opera.
+Voxli Book Reader is a lightweight Manifest V3 browser extension for reading
+local **EPUB** and **FB2** files.
 
-## Promo & Screenshots
-
-<p align="center">
-  <img src="store-assets/opera-promo-300x188.png" alt="Opera promo" />
-</p>
-
-<p align="center">
-  <img src="store-assets/1.png" alt="Reader screenshot 1" />
-</p>
-
-<p align="center">
-  <img src="store-assets/2.png" alt="Reader screenshot 2" />
-</p>
+The project keeps one copy of the shared extension code and separate platform
+files for Chromium-based browsers and Firefox. Store uploads are generated as
+standalone ZIP archives with `manifest.json` at the archive root.
 
 ## Features
 
@@ -23,80 +14,192 @@ Voxli Book Reader is a lightweight browser extension for reading local **EPUB** 
 - Table of contents navigation and chapter switching.
 - Reading progress tracking per book.
 - Reader customization:
-  - font size and family,
-  - line height,
-  - content width,
-  - text alignment,
-  - light / dark / sepia themes.
-- Localized UI: English, Russian, German, French, Simplified Chinese, Traditional Chinese.
+  - font size and family;
+  - line height;
+  - content width;
+  - text alignment;
+  - light, dark and sepia themes.
+- Localized UI: English, Russian, German, French, Simplified Chinese and Traditional Chinese.
 
-## Privacy
+## Privacy and permissions
 
 Voxli Book Reader works fully on-device:
 
-- does **not** upload books to external servers,
-- does **not** collect personal data,
-- does **not** use analytics or tracking scripts.
+- it does not upload books to external servers;
+- it does not collect personal data;
+- it does not use analytics or tracking scripts.
 
-All reading data is stored locally in browser extension storage.
-
-The public privacy policy for store submissions is available at:
-
-- https://github.com/leszavr/voxli_book_reader/blob/main/PRIVACY.md
-
-## Permissions
+All reading data is stored locally in browser extension storage. The privacy
+policy is available in [PRIVACY.md](PRIVACY.md).
 
 The extension requests only:
 
-- `storage` — save user settings and reading progress,
+- `storage` — save user settings and reading progress;
 - `unlimitedStorage` — keep large local book cache/progress data.
 
-## Project Structure
+## Repository structure
 
-- `manifest.json` — extension manifest (MV3).
-- `reader.html` — reader page.
-- `filepicker.html` — lightweight file picker window opened from the toolbar button when there is no recent book.
-- `options.html` — extension options.
-- `src/` — core logic (reader, settings, storage, parsers).
-- `src/background.js` — handles toolbar button click.
-- `_locales/` — localization messages.
-- `icons/` — extension icons.
+```text
+common/
+├── _locales/          # Shared translations
+├── icons/             # Shared extension icons
+├── src/               # Shared reader, parsers and UI logic
+├── filepicker.html
+├── options.html
+├── reader.html
+└── styles.css
+
+platforms/
+├── chromium/
+│   ├── manifest.json  # Chromium MV3 service worker manifest
+│   └── src/background.js
+└── firefox/
+    ├── manifest.json  # Gecko ID and AMO data declaration
+    └── src/background.js
+
+scripts/package.sh     # Creates a store-ready ZIP
+tests/test_parsers.html # Manual parser test page
+extension-release/
+├── chrome/            # Chrome archives
+├── opera/             # Existing Opera release history
+└── firefox/           # Firefox archives
+```
+
+The shared files are stored only in `common/`. Platform directories contain
+only files that differ between browser families. The packaging script creates a
+temporary staging directory, combines `common/` with one platform variant and
+removes the staging directory after creating the ZIP. The staging directory is
+never included in the archive.
+
+## Local development
+
+This project is plain JavaScript and has no build step for development.
+
+### Chromium-based browsers
+
+Open the browser's extensions page (`chrome://extensions`, `edge://extensions`,
+`opera://extensions` or the equivalent page), enable **Developer mode**, choose
+**Load unpacked**, and select a temporary unpacked tree created by the packaging
+script. Because the unpacked directory must contain a manifest at its root, do
+not select `common/` directly:
+
+```bash
+rm -rf /tmp/voxli-chromium
+rm -rf /tmp/voxli-release
+RELEASE_ROOT=/tmp/voxli-release bash scripts/package.sh chromium
+unzip -q /tmp/voxli-release/chrome/voxli-book-reader-chrome-v1.0.12.zip -d /tmp/voxli-chromium
+```
+
+Then select `/tmp/voxli-chromium` with **Load unpacked**.
+
+### Firefox
+
+For temporary Firefox testing, build a temporary unpacked tree:
+
+```bash
+rm -rf /tmp/voxli-firefox
+rm -rf /tmp/voxli-release
+RELEASE_ROOT=/tmp/voxli-release bash scripts/package.sh firefox
+unzip -q /tmp/voxli-release/firefox/voxli-book-reader-firefox-v1.0.12.zip -d /tmp/voxli-firefox
+```
+
+Open `about:debugging#/runtime/this-firefox`, choose **Load Temporary Add-on**,
+and select `/tmp/voxli-firefox/manifest.json`.
+
+The temporary extension is removed by Firefox after a browser restart. A
+signed AMO package is required for persistent installation.
+
+### Parser test page
+
+Serve the repository over HTTP and open `tests/test_parsers.html`. The page
+imports parser modules from `common/src/` and is not included in store ZIPs.
+
+## Packaging
+
+The script requires Bash, Python 3 and the `zip` utility. It reads the version
+from the selected platform manifest.
+
+Create the Chromium package for Chrome Web Store, Edge Add-ons and other
+Chromium-compatible channels:
+
+```bash
+bash scripts/package.sh chromium
+```
+
+Output:
+
+```text
+extension-release/chrome/voxli-book-reader-chrome-v1.0.12.zip
+```
+
+Create the Opera package from the same Chromium variant:
+
+```bash
+bash scripts/package.sh opera
+```
+
+Output:
+
+```text
+extension-release/opera/voxli-book-reader-opera-v1.0.12.zip
+```
+
+The script refuses to overwrite an existing archive. This protects historical
+releases and the Opera package already sent for moderation. To replace an
+archive deliberately, set `FORCE=1`:
+
+```bash
+FORCE=1 bash scripts/package.sh chromium
+```
+
+Create the Firefox package for AMO:
+
+```bash
+bash scripts/package.sh firefox
+```
+
+Output:
+
+```text
+extension-release/firefox/voxli-book-reader-firefox-v1.0.12.zip
+```
+
+The archive contains only extension files and always has this shape:
+
+```text
+manifest.json
+options.html
+filepicker.html
+reader.html
+styles.css
+_locales/
+icons/
+src/
+```
+
+The script does not package the repository root, `common/`, `platforms/`,
+`.tmp/`, tests, documentation or previous release archives.
+
+## Browser variants
+
+- `platforms/chromium/` is used for Chrome, Edge, Opera, Brave, Vivaldi and
+  Yandex Browser. It uses a Manifest V3 module service worker.
+- `platforms/firefox/` is used for Firefox. It adds the Gecko extension ID and
+  `data_collection_permissions.required: ["none"]`, and uses the Firefox
+  background-script form.
+
+The current Opera release was already submitted for moderation before this
+layout change. Files in `extension-release/opera/` are historical release
+archives and are not modified by the new packaging script.
 
 ## Third-party libraries
 
-This extension bundles the following third-party library as a vendored file:
+The extension bundles **JSZip v3.10.1** as `common/src/vendor/jszip.min.js` for
+reading EPUB archives locally. It is distributed under the MIT or GPLv3 license
+according to the bundled library header and upstream license text.
 
-- **JSZip v3.10.1** — used for reading `.epub` archives locally.
-  - File: `src/vendor/jszip.min.js`
-  - Source: https://stuk.github.io/jszip/
-  - License: MIT or GPLv3 (see library header and upstream license text)
-
-## Development
-
-This project is plain JavaScript (no build step required).
-
-1. Clone repository.
-2. Open Opera Extensions page (`opera://extensions`).
-3. Enable **Developer mode**.
-4. Click **Load unpacked** and select the project folder.
-
-## Packaging for Opera Add-ons and Chrome Web Store
-
-Create a ZIP from the project root. The manifest must be at the archive root:
-
-```bash
-zip -r extension-release/voxli-book-reader-opera-v1.0.12.zip \
-  manifest.json options.html filepicker.html reader.html styles.css _locales icons src
-```
-
-Upload the generated ZIP to Opera Add-ons and provide this public source repository link:
-
-- https://github.com/leszavr/voxli_book_reader
-
-For Chrome Web Store listing assets, use the files in `store-assets/`. Opera screenshots
-are 612×408 pixels; Chrome requires screenshots at 1280×800 or 640×400 pixels and a
-440×280 small promotional tile. The Chrome dashboard also requires privacy disclosures,
-permission justifications, and the public privacy policy URL above.
+- Project: https://stuk.github.io/jszip/
+- Source repository: https://github.com/leszavr/voxli_book_reader
 
 ## Version
 
