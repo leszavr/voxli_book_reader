@@ -60,7 +60,7 @@ function clamp(value, min, max) {
 function chapterReadableSize(chapter) {
   const titleSize = String(chapter?.title || "").trim().length;
   const contentText = String(chapter?.content || "")
-    .replaceAll(/<[^>]*>/g, " ")
+    .replaceAll(/<[^<>]*>/g, " ")
     .replaceAll(/\s+/g, " ")
     .trim();
   return Math.max(1, titleSize + contentText.length);
@@ -98,26 +98,44 @@ function updateTocActive() {
 
 function renderToc() {
   if (!state.book) {
-    elements.tocList.innerHTML = "";
+    elements.tocList.replaceChildren();
     return;
   }
 
-  const tocItems = [];
+  const tocItems = document.createDocumentFragment();
   let lastPartTitle = "";
 
   state.book.chapters.forEach((chapter, index) => {
     const partTitle = String(chapter.partTitle || "").trim();
     if (partTitle && partTitle !== lastPartTitle) {
-      tocItems.push(`<li class="toc-group"><span class="toc-group-label">${escapeHtml(partTitle)}</span></li>`);
+      const group = document.createElement("li");
+      group.className = "toc-group";
+      const groupLabel = document.createElement("span");
+      groupLabel.className = "toc-group-label";
+      groupLabel.textContent = partTitle;
+      group.append(groupLabel);
+      tocItems.append(group);
       lastPartTitle = partTitle;
     }
 
-    const activeClass = index === state.chapterIndex ? "toc-row active" : "toc-row";
-    const title = escapeHtml(chapter.title || `${t("chapter")} ${index + 1}`);
-    tocItems.push(`<li class="${activeClass}" data-chapter-index="${index}"><a href="#" class="toc-link"><span class="toc-index">${index + 1}.</span><span class="toc-title">${title}</span></a></li>`);
+    const item = document.createElement("li");
+    item.className = index === state.chapterIndex ? "toc-row active" : "toc-row";
+    item.dataset.chapterIndex = String(index);
+    const link = document.createElement("a");
+    link.href = "#";
+    link.className = "toc-link";
+    const itemIndex = document.createElement("span");
+    itemIndex.className = "toc-index";
+    itemIndex.textContent = `${index + 1}.`;
+    const itemTitle = document.createElement("span");
+    itemTitle.className = "toc-title";
+    itemTitle.textContent = chapter.title || `${t("chapter")} ${index + 1}`;
+    link.append(itemIndex, itemTitle);
+    item.append(link);
+    tocItems.append(item);
   });
 
-  elements.tocList.innerHTML = tocItems.join("");
+  elements.tocList.replaceChildren(tocItems);
 
   elements.tocList.querySelectorAll("li[data-chapter-index]").forEach((item) => {
     item.addEventListener("click", (event) => {
@@ -154,7 +172,11 @@ function renderChapter(index, restoreScrollTop = 0) {
     <span class="chapter-nav-progress"></span>
   </div>`;
 
-  elements.readerContent.innerHTML = sanitizeHtml(chapter.content + footnotesHtml) + navHtml;
+  const chapterDocument = new DOMParser().parseFromString(
+    sanitizeHtml(chapter.content + footnotesHtml) + navHtml,
+    "text/html",
+  );
+  elements.readerContent.replaceChildren(...chapterDocument.body.childNodes);
   elements.readerContent.scrollTop = Math.max(0, restoreScrollTop);
 
   elements.readerContent.querySelector(".chapter-nav-prev")?.addEventListener("click", () => {

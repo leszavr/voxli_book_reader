@@ -8,6 +8,7 @@ usage() {
   cat <<'EOF'
 Usage:
   bash scripts/package.sh chromium [release-directory]
+  bash scripts/package.sh edge [release-directory]
   bash scripts/package.sh opera [release-directory]
   bash scripts/package.sh firefox [release-directory]
 
@@ -28,6 +29,10 @@ case "$target" in
   chromium)
     platform="chromium"
     archive_prefix="chrome"
+    ;;
+  edge)
+    platform="chromium"
+    archive_prefix="edge"
     ;;
   opera)
     platform="chromium"

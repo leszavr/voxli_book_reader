@@ -3,6 +3,8 @@
 Voxli Book Reader is a lightweight Manifest V3 browser extension for reading
 local **EPUB** and **FB2** files.
 
+![Voxli Book Reader](store-assets/promo-marquee-1400x560.jpg)
+
 The project keeps one copy of the shared extension code and separate platform
 files for Chromium-based browsers and Firefox. Store uploads are generated as
 standalone ZIP archives with `manifest.json` at the archive root.
@@ -119,8 +121,8 @@ imports parser modules from `common/src/` and is not included in store ZIPs.
 The script requires Bash, Python 3 and the `zip` utility. It reads the version
 from the selected platform manifest.
 
-Create the Chromium package for Chrome Web Store, Edge Add-ons and other
-Chromium-compatible channels:
+Create the Chromium package for Chrome Web Store and other Chromium-compatible
+channels:
 
 ```bash
 bash scripts/package.sh chromium
@@ -131,6 +133,22 @@ Output:
 ```text
 extension-release/chrome/voxli-book-reader-chrome-v1.0.12.zip
 ```
+
+Create the Edge Add-ons package explicitly:
+
+```bash
+bash scripts/package.sh edge
+```
+
+Output:
+
+```text
+extension-release/edge/voxli-book-reader-edge-v1.0.12.zip
+```
+
+The Edge package uses the same Chromium Manifest V3 files as the Chrome
+package. Upload the ZIP itself to Microsoft Partner Center; do not upload the
+repository directory or a ZIP containing an extra top-level folder.
 
 Create the Opera package from the same Chromium variant:
 
@@ -163,6 +181,13 @@ Output:
 ```text
 extension-release/firefox/voxli-book-reader-firefox-v1.0.12.zip
 ```
+
+Upload the Firefox ZIP to [Firefox Add-on Developer Hub](https://addons.mozilla.org/developers/addon/submit/).
+The Firefox variant includes a stable Gecko extension ID and declares that it
+does not collect data. The current AMO package targets Firefox Desktop only;
+Firefox for Android compatibility is not claimed. AMO may request source code
+for bundled or minified third-party code during review; keep the repository
+source and the JSZip license information available.
 
 The archive contains only extension files and always has this shape:
 
